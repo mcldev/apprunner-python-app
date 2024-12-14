@@ -1,8 +1,8 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
-FROM python:3.10
-
-RUN curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py && yum update -y
+FROM public.ecr.aws/amazonlinux/amazonlinux:latest
+RUN yum update -y
+RUN yum install python3.10 -y && curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
 COPY . /app
 WORKDIR /app
 RUN pip3 install -r requirements.txt
