@@ -1,10 +1,24 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
-FROM public.ecr.aws/amazonlinux/amazonlinux:latest
-RUN dnf update -y
-RUN dnf install python3.10 -y && curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
+FROM python:3.10
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    binutils \
+    gdal-bin \
+    libproj-dev \
+    libgdal-dev
+
+# Set environment variables
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
+ENV C_INCLUDE_PATH=/usr/include/gdal
+
+# Install Python dependencies
 COPY . /app
 WORKDIR /app
-RUN pip3 install -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip3 install  --no-cache-dir -r requirements.txt
+
+# Run the application
 CMD python3 app.py
 EXPOSE 8080
