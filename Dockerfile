@@ -1,13 +1,13 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
-FROM python:3.10
+FROM python:3.10-alpine
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
-    binutils \
-    gdal-bin \
-    libproj-dev \
-    libgdal-dev
+RUN apk add --no-cache geos gdal proj py3-gdal
+#    binutils \
+#    gdal-bin \
+#    libproj-dev \
+#    libgdal-dev
 
 # Set environment variables
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
@@ -22,5 +22,6 @@ RUN pip3 install  --no-cache-dir -r requirements.txt
 # Run the application
 ENV FLASK_APP=app
 ENV test_var=some_other_value
+
 EXPOSE 8000
 CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
