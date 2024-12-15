@@ -20,5 +20,7 @@ RUN pip install --upgrade pip
 RUN pip3 install  --no-cache-dir -r requirements.txt
 
 # Run the application
-CMD python3 app.py
-EXPOSE 8080
+ENV FLASK_APP=app
+ENV test_var=some_other_value
+EXPOSE 8000
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
